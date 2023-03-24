@@ -167,10 +167,4 @@ class ChocolateMachine
 
         return rainbowCount;
     }
-
-    public static void Main()
-    {
-
-        ChocolateMachine C = new ChocolateMachine();
-    }
 }
