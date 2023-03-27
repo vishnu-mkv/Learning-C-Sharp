@@ -29,6 +29,5 @@ class Program
         Console.WriteLine(ExchangeFirstAndLast(s));
         Console.WriteLine(AddToFirstAndLastOfString(s));
         Console.WriteLine(RemoveOk(s));
-
     }
 }
