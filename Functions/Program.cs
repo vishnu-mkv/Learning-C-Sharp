@@ -1,0 +1,2 @@
+﻿// AnonymousFunction.Run();
+Lambda.Run();

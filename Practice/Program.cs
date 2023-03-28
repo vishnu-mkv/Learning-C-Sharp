@@ -1,2 +1,4 @@
 ﻿// SpiralMatrix.Run();
-Stocks.Run();
+// Stocks.Run();
+// Delegates.Run();
+RotateImage.Run();
