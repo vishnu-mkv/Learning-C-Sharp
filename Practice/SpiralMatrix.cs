@@ -5,9 +5,9 @@ class SpiralMatrix
     public static void Run()
     {
         Console.Write("Enter the number of rows: ");
-        int rows = int.Parse(Console.ReadLine());
+        int rows = int.Parse(Console.ReadLine()!);
         Console.Write("Enter the number of columns: ");
-        int columns = int.Parse(Console.ReadLine());
+        int columns = int.Parse(Console.ReadLine()!);
 
         int[,] matrix = new int[rows, columns];
         int value = 1;

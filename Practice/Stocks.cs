@@ -9,7 +9,7 @@ class Stocks
         Console.WriteLine("Enter the stock prices");
 
         int Profit = 0;
-        int[] Prices = Array.ConvertAll(Console.ReadLine().Split(' '), int.Parse);
+        int[] Prices = Array.ConvertAll(Console.ReadLine()!.Split(' '), int.Parse);
 
         int Minimum = Prices[0];
 
