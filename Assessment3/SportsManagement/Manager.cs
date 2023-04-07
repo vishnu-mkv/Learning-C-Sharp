@@ -18,13 +18,6 @@ public class SportsManagementSystem
             CreateSportsTable();
         }
 
-        // Check if Scoreboards table exists
-        if (!TableExists("Scoreboards"))
-        {
-            // Create Scoreboards table
-            CreateScoreboardsTable();
-        }
-
         // Check if Tournaments table exists
         if (!TableExists("Tournaments"))
         {
@@ -38,6 +31,14 @@ public class SportsManagementSystem
             // Create Players table
             CreatePlayersTable();
         }
+
+        // Check if Scoreboards table exists
+        if (!TableExists("Scoreboards"))
+        {
+            // Create Scoreboards table
+            CreateScoreboardsTable();
+        }
+
     }
 
     bool TableExists(string tableName)
@@ -83,11 +84,13 @@ public class SportsManagementSystem
 
             // Create Scoreboard table
             string createScoreboardQuery = @"
-                CREATE TABLE Scoreboard (
+                CREATE TABLE Scoreboards (
                     ScoreboardID INT PRIMARY KEY IDENTITY(1,1),
                     PlayerID INT,
+                    TournamentID INT,
                     Score INT,
-                    FOREIGN KEY (PlayerID) REFERENCES Players (PlayerID)
+                    FOREIGN KEY (PlayerID) REFERENCES Players (PlayerID),
+                    FOREIGN KEY (TournamentID) REFERENCES Tournaments (TournamentID)
                 )";
             using (SqlCommand command = new SqlCommand(createScoreboardQuery, connection))
             {
@@ -105,7 +108,7 @@ public class SportsManagementSystem
             using (SqlCommand command = new SqlCommand(
                 @"CREATE TABLE Tournaments
                 (
-                    TournamentID IDENTITY(1,1) INT PRIMARY KEY,
+                    TournamentID INT PRIMARY KEY IDENTITY(1,1),
                     TournamentName VARCHAR(50),
                     SportID INT,
                     FOREIGN KEY (SportID) REFERENCES Sports (SportID)
@@ -125,7 +128,7 @@ public class SportsManagementSystem
             using (SqlCommand command = new SqlCommand(
                 @"CREATE TABLE Players
                 (
-                    PlayerID INT IDENTITY(1,1) PRIMARY KEY,
+                    PlayerID INT PRIMARY KEY IDENTITY(1,1),
                     PlayerName VARCHAR(50),
                     TournamentID INT,
                     FOREIGN KEY (TournamentID) REFERENCES Tournaments (TournamentID)
@@ -317,6 +320,9 @@ public class SportsManagementSystem
         Console.WriteLine("Enter player ID: ");
         int playerId = Convert.ToInt32(Console.ReadLine());
 
+        Console.WriteLine("Enter Tournament id: ");
+        int tournamentId = Convert.ToInt32(Console.ReadLine()!);
+
         Console.WriteLine("Enter score: ");
         int score = Convert.ToInt32(Console.ReadLine());
 
@@ -325,10 +331,11 @@ public class SportsManagementSystem
             connection.Open();
 
             // Insert scoreboard entry into Scoreboard table
-            string insertScoreboardQuery = "INSERT INTO Scoreboard (PlayerID, Score) VALUES (@PlayerID, @Score)";
+            string insertScoreboardQuery = "INSERT INTO Scoreboards (PlayerID, TournamentID, Score) VALUES (@PlayerID, @TournamentID, @Score)";
             using (SqlCommand command = new SqlCommand(insertScoreboardQuery, connection))
             {
                 command.Parameters.AddWithValue("@PlayerID", playerId);
+                command.Parameters.AddWithValue("@TournamentID", tournamentId);
                 command.Parameters.AddWithValue("@Score", score);
 
                 int rowsAffected = command.ExecuteNonQuery();
@@ -352,6 +359,9 @@ public class SportsManagementSystem
         Console.WriteLine("Enter player ID: ");
         int playerId = Convert.ToInt32(Console.ReadLine());
 
+        Console.WriteLine("Enter Tournament id: ");
+        int tournamentId = Convert.ToInt32(Console.ReadLine()!);
+
         Console.WriteLine("Enter score: ");
         int score = Convert.ToInt32(Console.ReadLine());
 
@@ -360,10 +370,11 @@ public class SportsManagementSystem
             connection.Open();
 
             // Update scoreboard entry in Scoreboard table
-            string updateScoreboardQuery = "UPDATE Scoreboard SET Score = @Score WHERE PlayerID = @PlayerID";
+            string updateScoreboardQuery = "UPDATE Scoreboards SET Score = @Score WHERE PlayerID = @PlayerID AND TournamentID = @TournamentID";
             using (SqlCommand command = new SqlCommand(updateScoreboardQuery, connection))
             {
                 command.Parameters.AddWithValue("@PlayerID", playerId);
+                command.Parameters.AddWithValue("@TournamentID", tournamentId);
                 command.Parameters.AddWithValue("@Score", score);
 
                 int rowsAffected = command.ExecuteNonQuery();
